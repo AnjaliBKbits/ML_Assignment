@@ -1,5 +1,8 @@
 import streamlit as st
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from model.logistic_regression import run_logistic_regression
 
 # -------------------------------------------------
 # Page config
@@ -58,7 +61,15 @@ if uploaded_file is not None:
     st.markdown(f"**Selected Model:** `{model_choice}`")
 
     if run_button:
-        st.success("Model executed successfully!")
+
+        if model_choice == "Logistic Regression":
+            metrics, cfm, creport = run_logistic_regression(data)
+
+        else:
+            st.warning("Selected model is not yet implemented.")
+            st.stop()
+        
+        st.success(f"{model_choice} model executed successfully!")
 
         st.divider()
 
@@ -68,14 +79,14 @@ if uploaded_file is not None:
         st.subheader("Evaluation Metrics")
 
         col1, col2, col3 = st.columns(3)
-        col1.metric("Accuracy", "—")
-        col2.metric("AUC Score", "—")
-        col3.metric("MCC", "—")
+        col1.metric("Accuracy", f"{metrics['accuracy']:.4f}")
+        col2.metric("AUC Score", f"{metrics['auc_score']:.4f}")
+        col3.metric("MCC", f"{metrics['mcc']:.4f}")
 
         col4, col5, col6 = st.columns(3)
-        col4.metric("Precision", "—")
-        col5.metric("Recall", "—")
-        col6.metric("F1 Score", "—")
+        col4.metric("Precision", f"{metrics['precision']:.4f}")
+        col5.metric("Recall", f"{metrics['recall']:.4f}")
+        col6.metric("F1 Score", f"{metrics['f1_score']:.4f}")
 
         st.divider()
 
@@ -83,7 +94,11 @@ if uploaded_file is not None:
         # Confusion Matrix Placeholder
         # -------------------------------------------------
         st.subheader("Confusion Matrix")
-        st.info("Confusion matrix will be displayed here.")
+        fig, ax = plt.subplots()
+        sns.heatmap(cfm[0], annot=True, fmt='d', cmap='Blues', ax=ax)
+        ax.set_xlabel('Predicted Label')    
+        ax.set_ylabel('True Label')
+        st.pyplot(fig)
 
         st.divider()
 
@@ -91,12 +106,7 @@ if uploaded_file is not None:
         # Classification Report Placeholder
         # -------------------------------------------------
         st.subheader("Classification Report")
-        st.code("""
-Class  Precision  Recall  F1-score
-----------------------------------
-Class 0     —        —        —
-Class 1     —        —        —
-""")
+        st.code(creport)
 
 else:
     st.warning("Please upload a CSV file to begin.")
