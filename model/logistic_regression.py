@@ -32,7 +32,7 @@ def run_logistic_regression(data):
         y = LabelEncoder().fit_transform(y)
 
     # Split the data
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
     #Feature scaling
     scaler = StandardScaler()
@@ -51,7 +51,6 @@ def run_logistic_regression(data):
     #Predict probability score
     y_probab = model.predict_proba(X_test)
 
-    #Calculating evaluation metrics
     metrics = {
         "accuracy": accuracy_score(y_test, y_pred),
         "auc_score": roc_auc_score(y_test, y_probab, multi_class="ovr"),
@@ -60,7 +59,11 @@ def run_logistic_regression(data):
         "recall": recall_score(y_test, y_pred, average="weighted"),
         "f1_score": f1_score(y_test, y_pred, average="weighted"),
     }
-    cfm = confusion_matrix(y_test, y_pred),
+    
+    #Show correct vs incorrect predictions per class
+    cfm = confusion_matrix(y_test, y_pred)
+
+    #Generates precision, recall , F1_score for each class
     creport =  classification_report(y_test, y_pred)
     return metrics, cfm, creport
 

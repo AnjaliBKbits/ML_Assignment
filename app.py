@@ -3,6 +3,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from model.logistic_regression import run_logistic_regression
+from model.decision_tree_classifier import run_decision_tree_classifier
 
 # -------------------------------------------------
 # Page config
@@ -64,7 +65,8 @@ if uploaded_file is not None:
 
         if model_choice == "Logistic Regression":
             metrics, cfm, creport = run_logistic_regression(data)
-
+        elif model_choice == "Decision Tree":
+            metrics, cfm, creport = run_decision_tree_classifier(data)
         else:
             st.warning("Selected model is not yet implemented.")
             st.stop()
@@ -95,7 +97,7 @@ if uploaded_file is not None:
         # -------------------------------------------------
         st.subheader("Confusion Matrix")
         fig, ax = plt.subplots()
-        sns.heatmap(cfm[0], annot=True, fmt='d', cmap='Blues', ax=ax)
+        sns.heatmap(cfm, annot=True, fmt='d', cmap='Blues', ax=ax)
         ax.set_xlabel('Predicted Label')    
         ax.set_ylabel('True Label')
         st.pyplot(fig)
