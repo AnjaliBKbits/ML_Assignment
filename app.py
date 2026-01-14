@@ -4,6 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from model.logistic_regression import run_logistic_regression
 from model.decision_tree_classifier import run_decision_tree_classifier
+from model.knn_classifier import run_knn_classifier
 
 # -------------------------------------------------
 # Page config
@@ -61,12 +62,24 @@ if uploaded_file is not None:
 
     st.markdown(f"**Selected Model:** `{model_choice}`")
 
+    fault_columns = [
+        "Pastry",
+        "Z_Scratch",
+        "K_Scatch",
+        "Stains",
+        "Dirtiness",
+        "Bumps",
+        "Other_Faults"
+    ]
+
     if run_button:
 
         if model_choice == "Logistic Regression":
-            metrics, cfm, creport = run_logistic_regression(data)
+            metrics, cfm, creport = run_logistic_regression(data,fault_columns)
         elif model_choice == "Decision Tree":
-            metrics, cfm, creport = run_decision_tree_classifier(data)
+            metrics, cfm, creport = run_decision_tree_classifier(data,fault_columns)
+        elif model_choice == "K-Nearest Neighbors":
+            metrics, cfm, creport = run_knn_classifier(data,fault_columns)
         else:
             st.warning("Selected model is not yet implemented.")
             st.stop()

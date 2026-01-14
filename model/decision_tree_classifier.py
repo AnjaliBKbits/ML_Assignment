@@ -6,16 +6,7 @@ from sklearn.metrics import (accuracy_score, roc_auc_score, matthews_corrcoef,
                                  precision_score, recall_score, f1_score,
                                  confusion_matrix, classification_report)
 
-def run_decision_tree_classifier(data):
-    fault_columns = [
-        "Pastry",
-        "Z_Scratch",
-        "K_Scatch",
-        "Stains",
-        "Dirtiness",
-        "Bumps",
-        "Other_Faults"
-    ]
+def run_decision_tree_classifier(data,fault_columns):
 
     #Creating copy of dataset
     data = data.copy()

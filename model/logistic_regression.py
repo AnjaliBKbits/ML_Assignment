@@ -6,18 +6,7 @@ from sklearn.metrics import (accuracy_score, roc_auc_score, matthews_corrcoef,
                                  precision_score, recall_score, f1_score,
                                  confusion_matrix, classification_report)
 
-def run_logistic_regression(data):
-    
-    # Fault columns in Steel Plate dataset
-    fault_columns = [
-        "Pastry",
-        "Z_Scratch",
-        "K_Scatch",
-        "Stains",
-        "Dirtiness",
-        "Bumps",
-        "Other_Faults"
-    ]
+def run_logistic_regression(data,fault_columns):
 
     # Create SINGLE multiclass target
     data = data.copy()
