@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 from model.logistic_regression import run_logistic_regression
 from model.decision_tree_classifier import run_decision_tree_classifier
 from model.knn_classifier import run_knn_classifier
+from model.naive_bayes_classifier import run_naive_bayes_classifier
+from model.random_forest import run_random_forest_classifier
+from model.xgboost import run_xgboost_classifier
 
 # -------------------------------------------------
 # Page config
@@ -80,6 +83,12 @@ if uploaded_file is not None:
             metrics, cfm, creport = run_decision_tree_classifier(data,fault_columns)
         elif model_choice == "K-Nearest Neighbors":
             metrics, cfm, creport = run_knn_classifier(data,fault_columns)
+        elif model_choice == "Naive Bayes":
+            metrics, cfm, creport = run_naive_bayes_classifier(data,fault_columns)
+        elif model_choice == "Random Forest":
+            metrics, cfm, creport = run_random_forest_classifier(data,fault_columns)
+        elif model_choice == "XGBoost":
+            metrics, cfm, creport = run_xgboost_classifier(data,fault_columns)
         else:
             st.warning("Selected model is not yet implemented.")
             st.stop()
@@ -87,7 +96,6 @@ if uploaded_file is not None:
         st.success(f"{model_choice} model executed successfully!")
 
         st.divider()
-
         # -------------------------------------------------
         # Metrics Section (Placeholder)
         # -------------------------------------------------
